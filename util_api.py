@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 # vim: set expandtab tabstop=4 shiftwidth=4 :
+"""Module to get coordinates from addresses and travel times from coords."""
 import collections
 import requests
 import time
@@ -27,7 +28,8 @@ def convert_val_to_coord(val):
 
     Supported types are:
      - str
-     - coord."""
+     - coord.
+    """
     if isinstance(val, str):
         return val
     elif isinstance(val, coord):  # Could use ",".join on tuple ...
@@ -37,12 +39,14 @@ def convert_val_to_coord(val):
 
 
 def convert_val_to_time(val):
-    """Try to convert value to date & time in ISO-8601 format, including time zone information
-    like '2014-11-06T19:00:02-0500' or None
+    """Try to convert value to date & time in ISO-8601 format or None.
+
+    Format must include time zone information like '2014-11-06T19:00:02-0500'.
 
     Supported types are:
      - NoneType
-     - str."""
+     - str.
+    """
     if val is None:
         return None
     elif isinstance(val, str):
@@ -55,7 +59,8 @@ def get_travel_time(start, end, arrival_time=None):
     """Return travel time from the start/end coordinates (for a optional arrival time).
 
     This is a wrapper around `get_travel_time_internal` taking parameters with more
-    conventional types and handling the conversion."""
+    conventional types and handling the conversion.
+    """
     startcoord = convert_val_to_coord(start)
     endcoord = convert_val_to_coord(end)
     arrival_time = convert_val_to_time(arrival_time)
@@ -95,7 +100,8 @@ def get_coord_from_addr(address_arg):
     """Get coordinates (as a coord object) from an address.
 
     This calls the Google Geocode API. As such it is probably a good idea to
-    cache results likely to be used more than once."""
+    cache results likely to be used more than once.
+    """
     param = urllib.parse.urlencode({'address': address_arg})
     url = GOOGLE_GEOCODE_URL + param
     response = requests.get(url)
